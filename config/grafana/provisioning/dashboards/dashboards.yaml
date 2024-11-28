@@ -1,0 +1,15 @@
+apiVersion: 1
+
+providers:
+  - name: "Story Geth"
+    folder: "Story"
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards/story/story-geth.json
+    editable: true
+  - name: "Story Node"
+    folder: "Story"
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards/story/story-node.json
+    editable: true

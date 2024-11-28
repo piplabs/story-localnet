@@ -1,0 +1,126 @@
+x-logging: &logging
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+      max-file: '3'
+
+services:
+  validator3-common-init:
+    container_name: validator3-common-init
+    image: alpine
+    command: >
+      sh -c "apk add --no-cache openssl && openssl rand -hex 32 >
+      /root/.story/geth/data/jwtsecret"
+    volumes:
+      - db-validator3-geth-data:/root/.story/geth/data
+
+  validator3-geth-init:
+    container_name: validator3-geth-init
+    image: story-geth:localnet
+    build:
+      context: ../story-geth
+      dockerfile: ../story-localnet/Dockerfile.story-geth
+    entrypoint: ''
+    command: >
+      /bin/sh -c "/usr/local/bin/geth --state.scheme=hash init
+      --datadir=/root/.story/geth/data /root/.story/geth/config/genesis.json"
+    volumes:
+      - ./config/story/genesis-geth.json:/root/.story/geth/config/genesis.json:ro
+      - db-validator3-geth-data:/root/.story/geth/data
+    depends_on:
+      - validator3-common-init
+
+  validator3-geth:
+    container_name: validator3-geth
+    restart: unless-stopped
+    stop_grace_period: 50s
+    image: story-geth:localnet
+    build:
+      context: ../story-geth
+      dockerfile: ../story-localnet/Dockerfile.story-geth
+    entrypoint: >
+      sh -c 'sleep 10 && geth "$$@"'
+    command:
+      - --datadir=/root/.story/geth/data
+      - --config=/root/.story/geth/config/geth.toml
+      - --nodekey=/root/.story/geth/config/nodekey
+      - --authrpc.addr=0.0.0.0
+      - --authrpc.port=8551
+      - --authrpc.vhosts=*
+      - --authrpc.jwtsecret=/root/.story/geth/data/jwtsecret
+      - --http
+      - --http.vhosts=*
+      - --http.addr=0.0.0.0
+      - --http.port=8545
+      - --http.api=web3,eth,txpool,net,engine,debug,admin
+      - --metrics
+      - --metrics.addr=0.0.0.0
+      - --metrics.port=6060
+      - --port=30303
+      - --discovery.port=30303
+      - --nat=extip:10.0.0.24
+    volumes:
+      - ./config/story/validator3/geth:/root/.story/geth/config
+      - db-validator3-geth-data:/root/.story/geth/data
+      - db-validator3-node-data:/root/.story/story/data
+    networks:
+      story-localnet:
+        ipv4_address: 10.0.0.24
+    depends_on:
+      - validator3-geth-init
+    <<: *logging
+
+  validator3-node-init:
+    container_name: validator3-node-init
+    image: alpine
+    command: >
+      sh -c "echo '{\"height\": \"0\", \"round\": 0, \"step\": 0}' >
+      /root/.story/story/data/priv_validator_state.json"
+    volumes:
+      - db-validator3-node-data:/root/.story/story/data
+    depends_on:
+      - validator3-common-init
+
+  validator3-node:
+    container_name: validator3-node
+    restart: unless-stopped
+    stop_grace_period: 50s
+    image: story-node:localnet
+    build:
+      context: ../story
+      dockerfile: ../story-localnet/Dockerfile.story-node
+    entrypoint: >
+      sh -c 'sleep 10 && story run "$$@"'
+    command:
+      - --api-enable
+      - --api-address=0.0.0.0:1317
+      - --engine-jwt-file=/root/.story/geth/data/jwtsecret
+      - --engine-endpoint=http://validator3-geth:8551
+      - --log-level=debug
+    volumes:
+      - ./config/story/genesis-node.json:/root/.story/story/config/genesis.json
+      - ./config/story/validator3/story/config.toml:/root/.story/story/config/config.toml
+      - ./config/story/validator3/story/node_key.json:/root/.story/story/config/node_key.json
+      - ./config/story/validator3/story/priv_validator_key.json:/root/.story/story/config/priv_validator_key.json
+      - ./config/story/validator3/story/story.toml:/root/.story/story/config/story.toml
+      - db-validator3-geth-data:/root/.story/geth/data
+      - db-validator3-node-data:/root/.story/story/data
+    networks:
+      story-localnet:
+        ipv4_address: 10.0.0.25
+    depends_on:
+      - validator3-geth
+      - validator3-node-init
+    <<: *logging
+
+volumes:
+  db-validator3-geth-data:
+  db-validator3-node-data:
+
+networks:
+  story-localnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/16

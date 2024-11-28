@@ -1,0 +1,86 @@
+x-logging: &logging
+  logging:
+    driver: json-file
+    options:
+      max-size: 10m
+      max-file: '3'
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - prometheus-data:/etc/prometheus
+      - ./config/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - '9090:9090'
+    networks:
+      - story-localnet
+    <<: *logging
+
+  loki:
+    image: grafana/loki:latest
+    container_name: loki
+    volumes:
+      - loki-data:/loki
+      - ./config/loki/loki-config.yml:/loki/loki-config.yml
+    command:
+      - '--config.file=/loki/loki-config.yml'
+    ports:
+      - '3100:3100'
+    networks:
+      - story-localnet
+    <<: *logging
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    volumes:
+      - promtail-data:/etc/promtail
+      - /var/log:/var/log:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config/promtail/promtail-config.yml:/etc/promtail/promtail-config.yml
+    command:
+      - '-config.file=/etc/promtail/promtail-config.yml'
+    networks:
+      - story-localnet
+    ports:
+      - '9080:9080'
+      - '9095:9095'
+    <<: *logging
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./config/grafana/provisioning:/etc/grafana/provisioning
+      - ./config/grafana/dashboards:/var/lib/grafana/dashboards/story
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel,grafana-clock-panel
+    depends_on:
+      - prometheus
+      - loki
+    networks:
+      - story-localnet
+    <<: *logging
+
+volumes:
+  prometheus-data:
+  loki-data:
+  promtail-data:
+  grafana-data:
+
+networks:
+  story-localnet:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.0.0/16

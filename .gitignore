@@ -1,0 +1,9 @@
+# Ignore environment variable files
+.env
+
+# Ignore build artifacts
+build/
+
+# ETC
+.vscode
+.DS_Store

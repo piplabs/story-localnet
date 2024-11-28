@@ -1,0 +1,24 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+
+  - job_name: 'story-geth'
+    metrics_path: /debug/metrics/prometheus
+    static_configs:
+      - targets:
+          - 'bootnode1-geth:6060'
+          - 'validator1-geth:6060'
+          - 'validator2-geth:6060'
+          - 'validator3-geth:6060'
+          - 'validator4-geth:6060'
+
+  - job_name: 'story-node'
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - 'bootnode1-node:26660'
+          - 'validator1-node:26660'
+          - 'validator2-node:26660'
+          - 'validator3-node:26660'
+          - 'validator4-node:26660'
