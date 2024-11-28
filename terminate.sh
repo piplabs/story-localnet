@@ -28,4 +28,6 @@ for file in "${COMPOSE_FILES[@]}"; do
     fi
 done
 
+docker image rm story-geth:localnet story-node:localnet
+
 echo "🎉 All containers stopped and volumes removed successfully!"
