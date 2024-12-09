@@ -283,7 +283,7 @@ dial_timeout = "20s"
 #  - "nop"   : nop-mempool (short for no operation; the ABCI app is responsible
 #  for storing, disseminating and proposing txs). "create_empty_blocks=false" is
 #  not supported.
-type = "flood"
+type = "nop"
 
 # Recheck (default: true) defines whether CometBFT should recheck the
 # validity for all remaining transaction in the mempool after a block.
@@ -308,7 +308,7 @@ recheck_timeout = "1s"
 # from relaying transactions to other peers until they are included in a
 # block. In other words, if Broadcast is disabled, only the peer you send
 # the tx to will see it until it is included in a block.
-broadcast = true
+broadcast = false
 
 # WalPath (default: "") configures the location of the Write Ahead Log
 # (WAL) for the mempool. The WAL is disabled by default. To enable, set
