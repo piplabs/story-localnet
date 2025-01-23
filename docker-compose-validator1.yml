@@ -19,7 +19,7 @@ services:
     container_name: validator1-geth-init
     image: story-geth:localnet
     build:
-      context: ../story-geth
+      context: ../story-geth-private-fork
       dockerfile: ../story-localnet/Dockerfile.story-geth
     entrypoint: ''
     command: >
@@ -37,7 +37,7 @@ services:
     stop_grace_period: 50s
     image: story-geth:localnet
     build:
-      context: ../story-geth
+      context: ../story-geth-private-fork
       dockerfile: ../story-localnet/Dockerfile.story-geth
     entrypoint: >
       sh -c 'sleep 10 && geth "$$@"'
@@ -67,6 +67,8 @@ services:
     networks:
       story-localnet:
         ipv4_address: 10.0.0.20
+    ports:
+      - "8545:8545"
     depends_on:
       - validator1-geth-init
     <<: *logging
@@ -88,7 +90,7 @@ services:
     stop_grace_period: 50s
     image: story-node:localnet
     build:
-      context: ../story
+      context: ../story-private-fork
       dockerfile: ../story-localnet/Dockerfile.story-node
     entrypoint: >
       sh -c 'sleep 10 && story run "$$@"'
