@@ -4,7 +4,7 @@
   "initial_height": "1",
   "consensus_params": {
     "block": {
-      "max_bytes": "-1",
+      "max_bytes": "4194304",
       "max_gas": "-1"
     },
     "evidence": {
@@ -213,7 +213,7 @@
     },
     "evmengine": {
       "params": {
-        "execution_block_hash": "Epi3iJtVgRXpiGP3DwKiO4e4QLClYEYbAkEpXk4/LzE="
+        "execution_block_hash": "AS9C2Iew0SatPOG0MGnCTVupr1HODYooc7C9v4oHsxI="
       }
     },
     "genutil": {
