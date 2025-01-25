@@ -57,6 +57,27 @@ Use the `terminate.sh` script to stop and remove all nodes and their volumes:
 ./terminate.sh
 ```
 
+### How to Allocate Token to Your Account from Genesis
+
+To allocate tokens to your account in the genesis block, follow these steps:
+
+1.	Add your account information to the alloc section in `config/story/genesis-geth.json`:
+
+```json
+"<hex-encoded-account-address>": {
+  "nonce": "0x0",
+  "balance": "<hex-encoded-balance>",
+  "code": "0x",
+  "storage": {}
+}
+```
+
+2.	Run the `update-genesis-hash.sh` script to update the genesis block hash:
+
+```bash
+./update-genesis-hash.sh
+```
+
 ---
 
 ## **Monitoring Integration**
