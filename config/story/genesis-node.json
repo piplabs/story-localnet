@@ -224,7 +224,7 @@
               {
                 "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
                 "description": {
-                  "moniker": "0x0FC41199CE588948861A8DA86D725A5A073AE91A",
+                  "moniker": "validator-1-0x0FC41199CE588948861A8DA86D725A5A073AE91A",
                   "identity": "",
                   "website": "",
                   "security_contact": "",
@@ -246,7 +246,7 @@
                   "denom": "stake",
                   "amount": "1000000000000000"
                 },
-                "support_token_type": 0
+                "support_token_type": 1
               }
             ],
             "memo": "",
@@ -272,7 +272,7 @@
               {
                 "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
                 "description": {
-                  "moniker": "0x9DFC26A7662106EEEC5E87B20CBB690CFCE73A05",
+                  "moniker": "validator-2-0x9DFC26A7662106EEEC5E87B20CBB690CFCE73A05",
                   "identity": "",
                   "website": "",
                   "security_contact": "",
@@ -294,7 +294,7 @@
                   "denom": "stake",
                   "amount": "1000000000000000"
                 },
-                "support_token_type": 0
+                "support_token_type": 1
               }
             ],
             "memo": "",
@@ -320,7 +320,7 @@
               {
                 "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
                 "description": {
-                  "moniker": "0x99C28AE30CBEFEFF75E91C66692FE0BD9279B861",
+                  "moniker": "validator-3-0x99C28AE30CBEFEFF75E91C66692FE0BD9279B861",
                   "identity": "",
                   "website": "",
                   "security_contact": "",
@@ -368,7 +368,7 @@
               {
                 "@type": "/cosmos.staking.v1beta1.MsgCreateValidator",
                 "description": {
-                  "moniker": "0x768A39103B552E7AE56635DD4E9B55922AAFC504",
+                  "moniker": "validator-4-0x768A39103B552E7AE56635DD4E9B55922AAFC504",
                   "identity": "",
                   "website": "",
                   "security_contact": "",
