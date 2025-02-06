@@ -109,6 +109,9 @@ services:
     networks:
       story-localnet:
         ipv4_address: 10.0.0.23
+    ports:
+      - "1317:1317"
+      - "26657:26657"
     depends_on:
       - validator2-geth
       - validator2-node-init
