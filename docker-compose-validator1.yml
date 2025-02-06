@@ -67,6 +67,8 @@ services:
     networks:
       story-localnet:
         ipv4_address: 10.0.0.20
+    ports:
+      - "8545:8545"
     depends_on:
       - validator1-geth-init
     <<: *logging
@@ -109,6 +111,9 @@ services:
     networks:
       story-localnet:
         ipv4_address: 10.0.0.21
+    ports:
+      - "1317:1317"
+      - "26657:26657"
     depends_on:
       - validator1-geth
       - validator1-node-init

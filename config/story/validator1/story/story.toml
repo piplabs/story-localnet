@@ -63,7 +63,7 @@ evm-build-delay = "600ms"
 evm-build-optimistic = false
 
 # APIEnable defines if the API server should be enabled.
-api-enable = false
+api-enable = true
 
 # APIAddress defines the API server address to listen on.
 api-address = "0.0.0.0:1317"
