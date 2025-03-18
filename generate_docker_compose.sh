@@ -110,7 +110,7 @@ services:
       - --api-address=0.0.0.0:1317
       - --engine-jwt-file=\/root/.story/geth/data/jwtsecret
       - --engine-endpoint=http://${NODE_NAME}-geth:8551
-      - --log-level=debug
+      - --log_level=debug
     volumes:
       - ./config/story/genesis-node.json:\/root/.story/story/config/genesis.json
       - ./config/story/${NODE_NAME}/story/config.toml:\/root/.story/story/config/config.toml
