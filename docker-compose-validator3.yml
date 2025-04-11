@@ -67,6 +67,8 @@ services:
     networks:
       story-localnet:
         ipv4_address: 10.0.0.24
+    ports:
+      - "8547:8545"
     depends_on:
       - validator3-geth-init
     <<: *logging
@@ -97,7 +99,7 @@ services:
       - --api-address=0.0.0.0:1317
       - --engine-jwt-file=/root/.story/geth/data/jwtsecret
       - --engine-endpoint=http://validator3-geth:8551
-      - --log_level=debug
+      - --log-level=debug
     volumes:
       - ./config/story/genesis-node.json:/root/.story/story/config/genesis.json
       - ./config/story/validator3/story/config.toml:/root/.story/story/config/config.toml
