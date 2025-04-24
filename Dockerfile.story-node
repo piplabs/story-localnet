@@ -2,8 +2,8 @@
 FROM alpine:latest
 
 RUN apk add --no-cache ca-certificates
-COPY /story /usr/local/bin/
+COPY  story /usr/local/bin/
 
-EXPOSE 8545 8546 30303 30303/udp
+EXPOSE 1317 8545 8546 30303 30303/udp
 
 WORKDIR /root/.story/story

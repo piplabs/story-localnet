@@ -79,7 +79,7 @@ MaxPeers = 50
 NoDiscovery = false
 DiscoveryV4 = true
 BootstrapNodes = [
-  "enode://7af0f0a225353ce532c213a26be0608ed969dda0280074cc2205efa816c904cb9c4081d9ba96477d6776e883b6f11bce3531c2c2d2587608010b98479debdb08@bootnode1-geth:30303",
+  "enode://7af0f0a225353ce532c213a26be0608ed969dda0280074cc2205efa816c904cb9c4081d9ba96477d6776e883b6f11bce3531c2c2d2587608010b98479debdb08@10.0.0.10:30303",
 ]
 BootstrapNodesV5 = []
 StaticNodes = []

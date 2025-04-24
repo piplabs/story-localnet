@@ -1,6 +1,6 @@
 #!/bin/bash
 
-STORY_GETH_DIR="../story-geth-private-fork"
+STORY_GETH_DIR="../story-geth"
 GETH_BINARY="$STORY_GETH_DIR/build/bin/geth"
 
 GENESIS_GETH="./config/story/genesis-geth.json"
