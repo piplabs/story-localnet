@@ -27,7 +27,7 @@ fi
 TEMP_DATA_DIR=$(mktemp -d)
 
 # Init geth
-geth --datadir "$TEMP_DATA_DIR" init "$GENESIS_GETH" &> /dev/null
+$GETH_BINARY --datadir "$TEMP_DATA_DIR" init "$GENESIS_GETH" &> /dev/null
 
 if [ $? -ne 0 ]; then
   echo "Error: Failed to initialize geth with the provided genesis.json"
@@ -36,7 +36,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Get genesis block hash (hex encoded)
-GENESIS_HASH=$(geth --datadir "$TEMP_DATA_DIR" console --exec 'eth.getBlock(0).hash' 2>/dev/null | tr -d '"')
+GENESIS_HASH=$($GETH_BINARY --datadir "$TEMP_DATA_DIR" console --exec 'eth.getBlock(0).hash' 2>/dev/null | tr -d '"')
 
 if [ -z "$GENESIS_HASH" ]; then
   echo "Error: Failed to extract genesis block hash"
