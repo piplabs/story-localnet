@@ -99,7 +99,7 @@ services:
       - --api-address=0.0.0.0:1317
       - --engine-jwt-file=/root/.story/geth/data/jwtsecret
       - --engine-endpoint=http://validator1-geth:8551
-      - --log-level=debug
+      - --log_level=debug
     volumes:
       - ./config/story/genesis-node.json:/root/.story/story/config/genesis.json
       - ./config/story/validator1/story/config.toml:/root/.story/story/config/config.toml
@@ -111,6 +111,9 @@ services:
     networks:
       story-localnet:
         ipv4_address: 10.0.0.21
+    ports:
+      - "1317:1317"
+      - "26657:26657"
     depends_on:
       - validator1-geth
       - validator1-node-init
