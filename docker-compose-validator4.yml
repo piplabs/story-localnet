@@ -15,32 +15,32 @@ services:
     volumes:
       - db-validator4-geth-data:/root/.story/geth/data
 
-  validator4-geth-init:
-    container_name: validator4-geth-init
-    image: story-geth:localnet
-    build:
-      context: ../story-geth
-      dockerfile: ../story-localnet/Dockerfile.story-geth
-    entrypoint: ''
-    command: >
-      /bin/sh -c "/usr/local/bin/geth --state.scheme=hash init
-      --datadir=/root/.story/geth/data /root/.story/geth/config/genesis.json"
-    volumes:
-      - ./config/story/genesis-geth.json:/root/.story/geth/config/genesis.json:ro
-      - db-validator4-geth-data:/root/.story/geth/data
-    depends_on:
-      - validator4-common-init
+  # validator4-geth-init:
+  #   container_name: validator4-geth-init
+  #   image: story-geth:localnet
+  #   build:
+  #     context: ../story-geth
+  #     dockerfile: ../story-localnet/Dockerfile.story-geth
+  #   entrypoint: ''
+  #   command: >
+  #     /bin/sh -c "/usr/local/bin/geth --state.scheme=hash init
+  #     --datadir=/root/.story/geth/data /root/.story/geth/config/genesis.json"
+  #   volumes:
+  #     - ./config/story/genesis-geth.json:/root/.story/geth/config/genesis.json:ro
+  #     - db-validator4-geth-data:/root/.story/geth/data
+  #   depends_on:
+  #     - validator4-common-init
 
   validator4-geth:
     container_name: validator4-geth
     restart: unless-stopped
     stop_grace_period: 50s
-    image: story-geth:localnet
+    image: story-geth:pectra
     build:
       context: ../story-geth
       dockerfile: ../story-localnet/Dockerfile.story-geth
     entrypoint: >
-      sh -c 'sleep 10 && geth "$$@"'
+      sh -c 'sleep 10 && geth --local "$$@"'
     command:
       - --datadir=/root/.story/geth/data
       - --config=/root/.story/geth/config/geth.toml
@@ -67,8 +67,6 @@ services:
     networks:
       story-localnet:
         ipv4_address: 10.0.0.26
-    depends_on:
-      - validator4-geth-init
     <<: *logging
 
   validator4-node-init:

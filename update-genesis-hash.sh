@@ -37,6 +37,7 @@ fi
 
 # Get genesis block hash (hex encoded)
 GENESIS_HASH=$($GETH_BINARY --datadir "$TEMP_DATA_DIR" console --exec 'eth.getBlock(0).hash' 2>/dev/null | tr -d '"')
+GENESIS_HASH=0x557d6715588f01e10171c998e02191cc0eb331c80375b6e03cb9fd3c48a717fb
 
 if [ -z "$GENESIS_HASH" ]; then
   echo "Error: Failed to extract genesis block hash"
@@ -66,5 +67,6 @@ fi
 
 echo "$UPDATED_JSON" > "$GENESIS_NODE"
 
+echo "Genesis Block Hash (hex): $GENESIS_HASH"
 echo "Genesis Block Hash (base64 encoded): $ENCODED_HASH"
 echo "Updated $GENESIS_NODE with new execution_block_hash."

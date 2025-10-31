@@ -54,7 +54,7 @@ services:
       context: ../story-geth
       dockerfile: ../story-localnet/Dockerfile.story-geth
     entrypoint: >
-      sh -c 'sleep 10 && geth "\$\$@"'
+      sh -c 'sleep 10 && geth --local "\$\$@"'
     command:
       - --datadir=\/root/.story/geth/data
       - --config=\/root/.story/geth/config/geth.toml
