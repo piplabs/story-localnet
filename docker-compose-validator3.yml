@@ -15,32 +15,32 @@ services:
     volumes:
       - db-validator3-geth-data:/root/.story/geth/data
 
-  # validator3-geth-init:
-  #   container_name: validator3-geth-init
-  #   image: story-geth:localnet
-  #   build:
-  #     context: ../story-geth
-  #     dockerfile: ../story-localnet/Dockerfile.story-geth
-  #   entrypoint: ''
-  #   command: >
-  #     /bin/sh -c "/usr/local/bin/geth --state.scheme=hash init
-  #     --datadir=/root/.story/geth/data /root/.story/geth/config/genesis.json"
-  #   volumes:
-  #     - ./config/story/genesis-geth.json:/root/.story/geth/config/genesis.json:ro
-  #     - db-validator3-geth-data:/root/.story/geth/data
-  #   depends_on:
-  #     - validator3-common-init
+  validator3-geth-init:
+    container_name: validator3-geth-init
+    image: story-geth:osaka
+    build:
+      context: ../story-geth
+      dockerfile: ../story-localnet/Dockerfile.story-geth
+    entrypoint: ''
+    command: >
+      /bin/sh -c "/usr/local/bin/geth --state.scheme=hash init
+      --datadir=/root/.story/geth/data /root/.story/geth/config/genesis.json"
+    volumes:
+      - ./config/story/genesis-geth.json:/root/.story/geth/config/genesis.json:ro
+      - db-validator3-geth-data:/root/.story/geth/data
+    depends_on:
+      - validator3-common-init
 
   validator3-geth:
     container_name: validator3-geth
     restart: unless-stopped
     stop_grace_period: 50s
-    image: story-geth:pectra
+    image: story-geth:osaka
     build:
       context: ../story-geth
       dockerfile: ../story-localnet/Dockerfile.story-geth
     entrypoint: >
-      sh -c 'sleep 10 && geth --local "$$@"'
+      sh -c 'sleep 10 && geth "$$@"'
     command:
       - --datadir=/root/.story/geth/data
       - --config=/root/.story/geth/config/geth.toml
