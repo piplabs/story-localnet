@@ -1,6 +1,7 @@
 #!/bin/bash
 
 COMPOSE_FILES=(
+    "rpc1"
     "bootnode1"
     "validator1"
     "validator2"
@@ -12,13 +13,18 @@ COMPOSE_FILES=(
 stop_container() {
     local file=$1
     echo "Stopping $file..."
-    if docker compose -f "docker-compose-${file}.yml" down -v -t 1; then
+    if docker compose -f "docker-compose-${file}.yml" down -v -t 1 --remove-orphans; then
         echo "✅ $file stopped successfully"
     else
         echo "❌ Failed to stop $file"
         return 1
     fi
 }
+
+echo "🛑 Stopping Blockscout..."
+cd blockscout && docker compose down -v -t 1 --remove-orphans
+rm -rf services/blockscout-db-data services/stats-db-data services/redis-data services/dets
+cd ..
 
 echo "🛑 Stopping all containers..."
 for file in "${COMPOSE_FILES[@]}"; do
@@ -28,6 +34,7 @@ for file in "${COMPOSE_FILES[@]}"; do
     fi
 done
 
-docker image rm story-geth:localnet story-node:localnet
+echo "🧹 Cleaning up images..."
+docker rmi -f story-geth:localnet story-node:localnet 2>/dev/null || true
 
 echo "🎉 All containers stopped and volumes removed successfully!"

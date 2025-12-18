@@ -17,6 +17,8 @@ via its own Docker Compose file for modularity.
 - **Validators**:
   - `docker-compose-validator1.yml` through `docker-compose-validator4.yml`:
     Manage nodes responsible for block proposal and consensus.
+- **RPC Node**:
+  - `docker-compose-rpc1.yml`: Public RPC endpoint for external access.
 
 #### **Features**
 
@@ -178,5 +180,64 @@ docker-compose -f docker-compose-monitoring.yml down
 | **26656** | story-node  | P2P networking for the Story consensus layer.           |
 | **26657** | story-node  | HTTP-RPC endpoint for Story blockchain communication.   |
 | **26660** | story-node  | Metrics endpoint for Story performance monitoring.      |
+| **3080**  | Blockscout  | Block explorer web interface.                           |
+| **3081**  | Blockscout  | Stats API proxy.                                        |
+| **3082**  | Blockscout  | Visualizer API proxy.                                   |
+
+---
+
+## **RPC Node**
+
+The RPC node (`rpc1`) provides public HTTP and WebSocket endpoints for external
+applications to interact with the blockchain. Validator nodes do not expose
+their RPC ports to the host.
+
+### **Endpoints**
+
+| **Protocol** | **URL**                  | **Description**                    |
+| ------------ | ------------------------ | ---------------------------------- |
+| HTTP RPC     | `http://localhost:8545`  | JSON-RPC API for transactions      |
+| WebSocket    | `ws://localhost:8546`    | Real-time event subscriptions      |
+| REST API     | `http://localhost:1317`  | Story blockchain REST API          |
+| Tendermint   | `http://localhost:26657` | Tendermint RPC for consensus layer |
+
+### **Network Configuration**
+
+- **IP Address**: `10.0.0.30` (geth), `10.0.0.31` (node)
+- **Config Directory**: `config/story/rpc1/`
+
+---
+
+## **Blockscout Explorer**
+
+Blockscout provides a web-based block explorer for the Story localnet.
+
+### **Access**
+
+| **Service**  | **URL**                 | **Description**              |
+| ------------ | ----------------------- | ---------------------------- |
+| Explorer     | `http://localhost:3080` | Block explorer web interface |
+| Stats API    | `http://localhost:3081` | Chain statistics API         |
+| Visualizer   | `http://localhost:3082` | Contract visualization API   |
+
+### **Start Blockscout**
+
+Blockscout is automatically started with `./start.sh`. To start manually:
+
+```bash
+cd blockscout && docker compose up -d
+```
+
+### **Stop Blockscout**
+
+```bash
+cd blockscout && docker compose down -v
+```
+
+### **Configuration**
+
+- **Backend config**: `blockscout/envs/common-blockscout.env`
+- **Frontend config**: `blockscout/envs/common-frontend.env`
+- **Nginx proxy**: `blockscout/proxy/conf/default.conf.template`
 
 ---
