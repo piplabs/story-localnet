@@ -4,6 +4,12 @@
 # Ignore build artifacts
 build/
 
+# Blockscout runtime data (generated at runtime)
+blockscout/services/blockscout-db-data/
+blockscout/services/redis-data/
+blockscout/services/stats-db-data/
+blockscout/services/dets/
+
 # ETC
 .vscode
 .DS_Store

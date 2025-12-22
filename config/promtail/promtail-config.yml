@@ -16,18 +16,20 @@ scrape_configs:
         refresh_interval: 10s
         filters:
           - name: name
-            values: 
+            values:
               - bootnode1-node
               - validator1-node
               - validator2-node
               - validator3-node
               - validator4-node
-              
+              - rpc1-node
+
               - bootnode1-geth
               - validator1-geth
               - validator2-geth
               - validator3-geth
               - validator4-geth
+              - rpc1-geth
     relabel_configs:
       - source_labels: ["__meta_docker_container_name"]
         regex: "/(.*)"
