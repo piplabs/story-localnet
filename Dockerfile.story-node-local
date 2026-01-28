@@ -1,0 +1,14 @@
+# Use local binary instead of building in Docker
+FROM alpine:latest
+
+RUN apk add --no-cache ca-certificates
+
+# Copy the local story binary (build context should be ../story)
+ARG STORY_BINARY=story
+COPY ${STORY_BINARY} /usr/local/bin/story
+RUN chmod +x /usr/local/bin/story
+
+EXPOSE 1317 8545 8546 30303 30303/udp
+
+WORKDIR /root/.story/story
+

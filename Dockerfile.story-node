@@ -1,5 +1,6 @@
-# Build Geth in a stock Go builder container
-FROM golang:1.22.11-alpine as builder
+# Build Story node in a stock Go builder container
+# Using Go 1.25 to support go.mod requirements (requires Go >= 1.24.10)
+FROM golang:1.25-alpine as builder
 
 # Set the Current Working Directory inside the container
 WORKDIR /story

@@ -1,7 +1,16 @@
 # Build Geth in a stock Go builder container
-FROM golang:1.23-alpine as builder
+# Using latest Go version to support tool block in go.mod (requires Go 1.24+)
+FROM golang:1.25-alpine as builder
 
-RUN apk add --no-cache gcc musl-dev linux-headers git
+# Update package index and install build dependencies in one layer
+# Using --no-cache and --update to ensure fresh packages and reduce layer size
+RUN apk update && \
+    apk add --no-cache --virtual .build-deps \
+        gcc \
+        musl-dev \
+        linux-headers \
+        git && \
+    rm -rf /var/cache/apk/*
 
 # Get dependencies - will also be cached if we won't change go.mod/go.sum
 COPY go.mod /story-geth/

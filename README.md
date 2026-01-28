@@ -80,6 +80,50 @@ To allocate tokens to your account in the genesis block, follow these steps:
 
 ---
 
+### How to Check Node Versions
+
+To check the version of **story-geth** and **story-node** running in the containers, use the following commands:
+
+#### **Check Geth Version**
+
+For any geth container (e.g., `validator1-geth`, `bootnode1-geth`):
+
+```bash
+# Check validator1 geth version
+docker exec validator1-geth geth version
+
+# Check bootnode1 geth version
+docker exec bootnode1-geth geth version
+
+# Check any other node (replace {role} with validator2, validator3, validator4, or bootnode1)
+docker exec {role}-geth geth version
+```
+
+#### **Check Story Node Version**
+
+For any story node container (e.g., `validator1-node`, `bootnode1-node`):
+
+```bash
+# Check validator1 story node version
+docker exec validator1-node story version
+
+# Check bootnode1 story node version
+docker exec bootnode1-node story version
+
+# Check any other node (replace {role} with validator2, validator3, validator4, or bootnode1)
+docker exec {role}-node story version
+```
+
+#### **List All Running Containers**
+
+To see all running containers and their names:
+
+```bash
+docker ps --filter "name=validator" --filter "name=bootnode"
+```
+
+---
+
 ## **Monitoring Integration**
 
 This setup includes a monitoring stack to provide centralized metrics and logs
