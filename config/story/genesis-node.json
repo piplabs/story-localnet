@@ -433,7 +433,7 @@
         "min_commission_rate": "0.050000000000000000",
         "min_delegation": "1024000000000",
         "flexible_period_type": 0,
-        "singularity_height": "600",
+        "singularity_height": "10",
         "periods": [
           {
             "period_type": 0,
