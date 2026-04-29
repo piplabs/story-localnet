@@ -15,6 +15,31 @@ if ! docker image inspect story-node:localnet >/dev/null 2>&1; then
     docker compose -f docker-compose-bootnode1.yml build bootnode1-node
 fi
 
+# Verify image binary matches the staged one (catches stale story-prebuilt /
+# wrong build context / cached image scenarios). Sentinel is written by
+# scripts/stage_binary.sh; if absent, this check is a soft warning instead
+# of a hard fail so the existing flow without staging still works.
+SENTINEL="$(pwd)/tmp/staged_binary.sha256"
+if [[ -f "$SENTINEL" ]]; then
+    EXPECTED=$(cat "$SENTINEL")
+    docker create --name verify-binary-tmp story-node:localnet >/dev/null
+    docker cp verify-binary-tmp:/usr/local/bin/story /tmp/__story_in_image >/dev/null
+    docker rm verify-binary-tmp >/dev/null
+    ACTUAL=$(shasum -a 256 /tmp/__story_in_image | awk '{print $1}')
+    rm -f /tmp/__story_in_image
+    if [[ "$EXPECTED" != "$ACTUAL" ]]; then
+        echo "❌ ERROR: image binary sha256 mismatch."
+        echo "   expected (from $SENTINEL): $EXPECTED"
+        echo "   actual   (from running image):  $ACTUAL"
+        echo "   the image was likely built from a stale story-prebuilt; rerun scripts/stage_binary.sh + force rebuild."
+        exit 1
+    fi
+    echo "✅ image binary matches staged binary (sha256 ${ACTUAL:0:16}...)"
+else
+    echo "⚠️  no $SENTINEL — skipping image-binary verification."
+    echo "    run scripts/stage_binary.sh <path-to-linux-binary> first to enable this check."
+fi
+
 # Start monitoring
 docker compose -f docker-compose-monitoring.yml up -d
 
